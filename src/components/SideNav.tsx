@@ -4,9 +4,16 @@ import { first151Pokemon, getFullPokedexNumber } from "../utils/index.ts";
 interface SideNavProps {
   selectedPokemon: number;
   setSelectedPokemon: (selectedPokemon: number) => void;
+  handleCloseMenu: () => void;
+  showSideMenu: boolean;
 }
 
-const SideNav = ({ selectedPokemon, setSelectedPokemon }: SideNavProps) => {
+const SideNav = ({
+  selectedPokemon,
+  setSelectedPokemon,
+  handleCloseMenu,
+  showSideMenu,
+}: SideNavProps) => {
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue, setDebouncedSearchValue] = useState(searchValue);
 
@@ -32,8 +39,11 @@ const SideNav = ({ selectedPokemon, setSelectedPokemon }: SideNavProps) => {
   }, [searchValue]);
 
   return (
-    <nav>
-      <div className={"header"}>
+    <nav className={" " + (showSideMenu ? " open" : "")}>
+      <div className={"header" + (showSideMenu ? " open" : "")}>
+        <button onClick={handleCloseMenu} className="open-nav-button">
+          <i className="fa-solid fa-arrow-left-long"></i>
+        </button>
         <h1 className="text-gradient">Pokédex</h1>
       </div>
       <input
@@ -52,6 +62,7 @@ const SideNav = ({ selectedPokemon, setSelectedPokemon }: SideNavProps) => {
             <button
               onClick={() => {
                 setSelectedPokemon(truePokedexNumber);
+                handleCloseMenu();
               }}
               key={pokemonIndex}
               className={`nav-card ${
